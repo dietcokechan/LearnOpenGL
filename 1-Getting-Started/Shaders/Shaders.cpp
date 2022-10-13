@@ -53,7 +53,7 @@ int main()
         0.5f, -0.5f, 0.0f
     };
 
-    // Generates Shader object using shaders defualt.vert and default.frag
+    // Generates Shader object using shaders default.vert and default.frag
     Shader shaderProgram(vertexShaderSource, fragmentShaderSource);
 
     // Generates Vertex Array Object and binds it

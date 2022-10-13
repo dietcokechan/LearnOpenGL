@@ -1,8 +1,9 @@
 #include "ShaderClass.h"
 
+
 Shader::Shader(const char *vertexFile, const char *fragmentFile)
 {
-    // Convert shader source strings in char array
+    // Shader sources from Shader.h
     const char *vertexSource = vertexFile;
     const char *fragmentSource = fragmentFile;
 
