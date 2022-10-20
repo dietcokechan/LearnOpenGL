@@ -2,8 +2,8 @@
 #define SHADERS_CLASS_H
 
 // shader paths
-const char *vertShaderPath = "./default.vert";
-const char *fragShaderPath = "./default.frag";
+const char *vertShaderPath = "../../../../../1-Getting-Started/Shaders/Exercise/default.vert";
+const char *fragShaderPath = "../../../../../1-Getting-Started/Shaders/Exercise/default.frag";
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
