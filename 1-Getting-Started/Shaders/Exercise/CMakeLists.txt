@@ -8,6 +8,3 @@ add_executable(Exercise
     VAO.cpp
     VBO.cpp
 )
-
-file(RELATIVE_PATH rel ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
-set_target_properties(Shaders PROPERTIES FOLDER "${rel}")
