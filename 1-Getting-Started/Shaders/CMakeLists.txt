@@ -9,5 +9,8 @@ VAO.cpp
 VBO.cpp 
 )
 
+add_subdirectory(Resources)
+add_subdirectory(Exercise)
+
 file(RELATIVE_PATH rel ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 set_target_properties(Shaders PROPERTIES FOLDER "${rel}")

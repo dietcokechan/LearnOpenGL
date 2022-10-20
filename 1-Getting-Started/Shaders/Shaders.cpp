@@ -7,13 +7,6 @@
 #include "VAO.h"
 #include "VBO.h"
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
-void processInput(GLFWwindow *window);
-
-// settings
-static const unsigned int scr_width = 800;
-static const unsigned int scr_height = 600;
-
 int main()
 {
     // Initializing GLFW
@@ -48,13 +41,14 @@ int main()
 
     // Vertices coordinates
     float vertices[] = {
-        0.0f, 0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f
+        // Positions        // Colors
+        0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,     // Top (red)
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   // Bottom left (green)
+        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f     // Bottom right (blue)
     };
 
-    // Generates Shader object using shaders default.vert and default.frag
-    Shader shaderProgram(vertexShaderSource, fragmentShaderSource);
+    // Generates Shader object using shaders from header file
+    Shader shaderProgram(vertShaderPath, fragShaderPath);
 
     // Generates Vertex Array Object and binds it
     VAO VAO1;
@@ -76,15 +70,22 @@ int main()
         processInput(window);
 
         // Specify background color
-        glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+        glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
         // Clean the back buffer and assign a new color to it
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Pulsating green color
+        // float time = glfwGetTime();
+        // float green = (sin(time) / 2.0f) + 0.5f;
+        // int vertexColorLocation = glGetUniformLocation(shaderProgram.ID, "myColor");
+
         // Tell OpenGL which Shader Program we want to use
         shaderProgram.Activate();
+        // glUniform4f(vertexColorLocation, 0.0f, green, 0.0f, 1.0f);
+
         // Bind the VAO so OpenGL knows to use it
         VAO1.Bind();
-
+    
         // Draw the triangle using OpenGL's primitive GL_TRIANGLES
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

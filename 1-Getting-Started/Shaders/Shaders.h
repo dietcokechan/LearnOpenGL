@@ -1,23 +1,15 @@
 #ifndef SHADERS_CLASS_H
 #define SHADERS_CLASS_H
 
-// shader sources
-const char *vertexShaderSource = R"(
-                                        #version 330 core
-                                        layout (location = 0) in vec3 aPos;
-                                        void main()
-                                        {
-                                            gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-                                        }
-                                    )";
+// shader paths
+const char *vertShaderPath = "C:/Users/Habiba/Code/LearnOpenGL/1-Getting-Started/Shaders/Resources/default.vert";
+const char *fragShaderPath = "C:/Users/Habiba/Code/LearnOpenGL/1-Getting-Started/Shaders/Resources/default.frag";
 
-const char *fragmentShaderSource = R"(
-                                        #version 330 core
-                                        out vec4 FragColor;
-                                        void main()
-                                        {
-                                            FragColor = vec4(0.6f, 0.4f, 0.8f, 1.0f);
-                                        }
-                                    )";
+void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void processInput(GLFWwindow *window);
+
+// settings
+static const unsigned int scr_width = 800;
+static const unsigned int scr_height = 600;
 
 #endif
