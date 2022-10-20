@@ -12,6 +12,8 @@ As well as learning how to set up CMake in the process which allowed me to have 
 
 ### First Triangle
 
+So first thing I did was specifing my triangle's vertices and defining them in a float array, then I start creating memory on the GPU where I want to store my data, in this case my triangle vertices, and configure how I want OpenGL to interpret this data and how to send it to the GPU, then I can have the vertex shader process the vertices I tell it to process. I create a VBO (Vertex Buffer Object) and a VAO (Vertex Array Object), bind and assign data to a buffer for OpenGL to use, setting a pointer to where it should start looking at my vertices. And lastly, I create a Shader Program and attach the variables that contain my vertex shader and fragment shader to it, activating the program and bind the VBO and VAO to draw my triangle, then deleting all these resources once we're done before closing the glfw window.
+
 ![Triangle](./Progress/first_triangle.png)
 
 ### ![Triangle Exercises](./1-Getting-Started/Hello-Triangle/Exercises/)
