@@ -9,4 +9,5 @@ void main()
 {
     gl_Position = vec4(aPos.x + horizontalOffset, -aPos.y, aPos.z, 1.0);
     myPos = aPos;
+    // cornerColor = aColor;
 }
