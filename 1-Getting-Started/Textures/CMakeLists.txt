@@ -7,5 +7,5 @@ Textures.cpp
 ShaderClass.cpp 
 VAO.cpp 
 VBO.cpp
-stb_image.cpp 
+Includes/stb_image.cpp
 )

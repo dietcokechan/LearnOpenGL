@@ -6,7 +6,7 @@
 #include "ShaderClass.h"
 #include "VAO.h"
 #include "VBO.h"
-#include "stb_image.h"
+#include "Includes/stb_image.h"
 
 int main()
 {
