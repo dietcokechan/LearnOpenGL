@@ -1,6 +1,6 @@
 # LearnOpenGL
 
-This repo is for documenting my progress with the ![LearnOpenGL](learnopengl.com) chapters
+This repo is for documenting my progress with the ![LearnOpenGL](https://www.learnopengl.com) chapters
 
 ## Getting Started
 
