@@ -64,12 +64,9 @@ int main()
     VAO1.Unbind();
     VBO1.Unbind();
 
-    // Texture
-    int imgWidth, imgHeight, colChannels;
-    unsigned char *data = stbi_load("../../../../1-Getting-Started/Textures/egg.png", &imgWidth, &imgHeight, &colChannels, 0);
-
-    unsigned int texture;
-    glGenTextures(1, &texture);
+    unsigned int texture0, texture1;
+    glGenTextures(1, &texture0);
+    glBindTexture(GL_TEXTURE_2D, texture0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -77,22 +74,43 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+    // Texture
+    int imgWidth, imgHeight, colChannels;
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char *data = stbi_load("../../../../1-Getting-Started/Textures/egg.png", &imgWidth, &imgHeight, &colChannels, 0);
+
     if(data)
     {
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgWidth, imgHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
-    else
+
+    stbi_image_free(data);
+
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    data = stbi_load("../../../../1-Getting-Started/Textures/wicked.png", &imgWidth, &imgHeight, &colChannels, 0);
+
+    if (data)
     {
-        std::cout << "Failed to load texture" << std::endl;
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgWidth, imgHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
     }
 
     stbi_image_free(data);
 
     shaderProgram.Activate();
-    glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex0"), 0);
-    shaderProgram.setInt("tex0", 1);
+    glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex1"), 0);
+    shaderProgram.setInt("tex1", 1);
 
     // Render loop
     while (!glfwWindowShouldClose(window))
@@ -116,7 +134,9 @@ int main()
 
         // Bind Texture object
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, texture0);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture1);
 
         // Bind the VAO so OpenGL knows to use it
         VAO1.Bind();
@@ -132,7 +152,8 @@ int main()
 
     VAO1.Delete();
     VBO1.Delete();
-    glDeleteTextures(1, &texture);
+    glDeleteTextures(1, &texture0);
+    glDeleteTextures(1, &texture1);
     shaderProgram.Delete();
 
     // Delete window and glfw before ending program

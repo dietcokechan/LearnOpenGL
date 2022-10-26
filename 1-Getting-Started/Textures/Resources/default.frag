@@ -6,8 +6,9 @@ in vec3 cornerColor;
 in vec2 texCoord;
 
 uniform sampler2D tex0;
+uniform sampler2D tex1;
 
 void main()
 {
-    FragColor = texture(tex0, texCoord) * vec4(cornerColor, 1.0);
+    FragColor = mix(texture(tex0, texCoord), texture(tex1, texCoord), 0.8);
 }
