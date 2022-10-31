@@ -1,11 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
-#include <glm>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include <iostream>
+
+#include "Includes/glm/glm/glm.hpp"
+#include "Includes/glm/glm/gtc/matrix_transform.hpp"
+#include "Includes/glm/glm/gtc/type_ptr.hpp"
 
 #include "Transformations.h"
 #include "ShaderClass.h"
@@ -117,15 +116,6 @@ int main()
     glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex1"), 0);
     shaderProgram.setInt("tex1", 1);
 
-    // Transformations
-    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    trans = glm::scale(trans, glm::vec3(2.0f, 2.0f, 2.0f));
-
-    unsigned int transformLoc = glGetUniformLocation(shaderProgram.ID, "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
     // Render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -137,8 +127,22 @@ int main()
         // Clean the back buffer and assign a new color to it
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Transformations
+        glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        unsigned int transformLoc = glGetUniformLocation(shaderProgram.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
+        // Pulsating green color
+        // float time = glfwGetTime();
+        // float green = (sin(time) / 2.0f) + 0.5f;
+        // int vertexColorLocation = glGetUniformLocation(shaderProgram.ID, "myColor");
+
         // Tell OpenGL which Shader Program we want to use
         shaderProgram.Activate();
+        // glUniform4f(vertexColorLocation, 0.0f, green, 0.0f, 1.0f);
 
         // Bind Texture object
         glActiveTexture(GL_TEXTURE0);
