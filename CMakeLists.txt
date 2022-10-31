@@ -20,6 +20,14 @@ FetchContent_Declare(
     GIT_TAG         3.3.8
 )
 FetchContent_MakeAvailable(glfw)
+
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY  git@github.com:g-truc/glm.git
+    GIT_TAG         0.9.9.8
+)
+FetchContent_MakeAvailable(glm)
+
 option(GLFW_BUILD_EXAMPLES OFF) # Disabling additional build targets
 option(GLFW_BUILD_TESTS OFF)
 option(GLFW_BUILD_DOCS OFF)
