@@ -20,13 +20,13 @@ FetchContent_Declare(
 )
 
 # GLM
-FetchContent_Declare(
-    glm
-    GIT_REPOSITORY  git@github.com:g-truc/glm.git
-    GIT_TAG         0.9.9.8
-)
+# FetchContent_Declare(
+#     glm
+#     GIT_REPOSITORY  git@github.com:g-truc/glm.git
+#     GIT_TAG         0.9.9.8
+# )
 
-FetchContent_MakeAvailable(glad glfw glm)
+FetchContent_MakeAvailable(glad glfw)
 
 option(GLFW_BUILD_EXAMPLES OFF) # Disabling additional build targets
 option(GLFW_BUILD_TESTS OFF)
