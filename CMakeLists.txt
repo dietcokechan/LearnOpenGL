@@ -11,7 +11,6 @@ FetchContent_Declare(
     GIT_REPOSITORY  git@github.com:Dav1dde/glad.git
     GIT_TAG         v0.1.36
 )
-FetchContent_MakeAvailable(glad)
 
 # GLFW
 FetchContent_Declare(
@@ -19,14 +18,15 @@ FetchContent_Declare(
     GIT_REPOSITORY  git@github.com:glfw/glfw.git
     GIT_TAG         3.3.8
 )
-FetchContent_MakeAvailable(glfw)
 
+# GLM
 FetchContent_Declare(
     glm
     GIT_REPOSITORY  git@github.com:g-truc/glm.git
     GIT_TAG         0.9.9.8
 )
-FetchContent_MakeAvailable(glm)
+
+FetchContent_MakeAvailable(glad glfw glm)
 
 option(GLFW_BUILD_EXAMPLES OFF) # Disabling additional build targets
 option(GLFW_BUILD_TESTS OFF)
