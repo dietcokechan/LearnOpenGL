@@ -46,10 +46,16 @@ int main()
 
     // Vertices coordinates
     float vertices[] = {
-        // Positions        // Colors           // Texture
-         0.0f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  0.5f, 1.0f,      // Top (red)
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  0.0f, 0.0f,      // Bottom left (green)
-         0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f      // Bottom right (blue)
+        // Postions         // Colors           // Textures
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right
+         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+        -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
+    };
+
+    unsigned int indices[] = {
+        0, 1, 3,    // First triangle
+        1, 2, 3     //Second triangle
     };
 
     // Generates Shader object using shaders from header file
@@ -61,6 +67,12 @@ int main()
 
     // Generates Vertex Buffer Object and links it to vertices
     VBO VBO1(vertices, sizeof(vertices));
+
+    unsigned int EBO;
+    glGenBuffers(1, &EBO);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Links VBO to VAO
     VAO1.LinkVBO(VBO1, 0);
@@ -139,9 +151,6 @@ int main()
         // float time = glfwGetTime();
         // float green = (sin(time) / 2.0f) + 0.5f;
         // int vertexColorLocation = glGetUniformLocation(shaderProgram.ID, "myColor");
-
-        // Tell OpenGL which Shader Program we want to use
-        shaderProgram.Activate();
         // glUniform4f(vertexColorLocation, 0.0f, green, 0.0f, 1.0f);
 
         // Bind Texture object
@@ -150,11 +159,14 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
 
+        // Tell OpenGL which Shader Program we want to use
+        shaderProgram.Activate();
+
         // Bind the VAO so OpenGL knows to use it
         VAO1.Bind();
     
         // Draw the triangle using OpenGL's primitive GL_TRIANGLES
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // Swap the back buffer with the front buffer
         glfwSwapBuffers(window);
