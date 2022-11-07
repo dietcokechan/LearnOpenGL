@@ -44,6 +44,8 @@ int main()
     // Specify OpenGl's viewport within the window
     glViewport(0, 0, 800, 600);
 
+    glEnable(GL_DEPTH_TEST);
+
     // Vertices coordinates
     float vertices[] = {
         -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
@@ -89,10 +91,18 @@ int main()
         -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
     };
 
-    // unsigned int indices[] = {
-    //     0, 1, 3,    // First triangle
-    //     1, 2, 3     //Second triangle
-    // };
+    glm::vec3 cubePositions[] = {
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::vec3(2.0f, 5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3(2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f, 3.0f, -7.5f),
+        glm::vec3(1.3f, -2.0f, -2.5f),
+        glm::vec3(1.5f, 2.0f, -2.5f),
+        glm::vec3(1.5f, 0.2f, -1.5f),
+        glm::vec3(-1.3f, 1.0f, -1.5f)
+    };
 
     // Generates Shader object using shaders from header file
     Shader shaderProgram(vertShaderPath, fragShaderPath);
@@ -103,12 +113,6 @@ int main()
 
     // Generates Vertex Buffer Object and links it to vertices
     VBO VBO1(vertices, sizeof(vertices));
-
-    // unsigned int EBO;
-    // glGenBuffers(1, &EBO);
-
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Links VBO to VAO
     VAO1.LinkVBO(VBO1, 0);
@@ -170,8 +174,6 @@ int main()
         // Input
         processInput(window);
 
-        glEnable(GL_DEPTH_TEST);
-
         // Specify background color
         glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
         // Clean the back buffer and assign a new color to it
@@ -186,39 +188,33 @@ int main()
         // Tell OpenGL which Shader Program we want to use
         shaderProgram.Activate();
 
+        // Orthographic projection
+        glm::mat4 projection = glm::mat4(1.0f);
+        glm::mat4 view = glm::mat4(1.0f);
+
+        projection = glm::perspective(glm::radians(45.0f), (float)scr_width / (float)scr_height, 0.1f, 100.0f);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -4.0f));
+
+        shaderProgram.setMat4("projection", projection);
+        shaderProgram.setMat4("view", view);
+
         // Bind the VAO so OpenGL knows to use it
         VAO1.Bind();
 
-        // Transformations
-        glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-        glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        for(unsigned int i = 0; i < 10; i++)
+        {
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, cubePositions[i]);
+            
+            float angle = 15.0f * i;
 
-        unsigned int transformLoc = glGetUniformLocation(shaderProgram.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+            model = glm::rotate(model, (float)glfwGetTime() * glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 
-        // Orthographic projection
-        glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
-        glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+            shaderProgram.setMat4("model", model);
 
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-
-        glm::mat4 view = glm::mat4(1.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-
-        int modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-        int viewLoc = glGetUniformLocation(shaderProgram.ID, "view");
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-
-        int projLoc = glGetUniformLocation(shaderProgram.ID, "projection");
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-    
-        // Draw the triangle using OpenGL's primitive GL_TRIANGLES
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+            // Draw the triangle using OpenGL's primitive GL_TRIANGLES
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
 
         // Swap the back buffer with the front buffer
         glfwSwapBuffers(window);
